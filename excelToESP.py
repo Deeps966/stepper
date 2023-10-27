@@ -28,9 +28,9 @@ def read_excel_to_dict(file_path):
         for index, row in df.iterrows():
             data_dict = {
               "row": index,
-              "motor1": float(row[0]),
-              "motor2": float(row[1]),
-              "motor3": float(row[2])
+              "a1": float(row[0]),
+              "a2": float(row[1]),
+              "d3": float(row[2])
             }
             data_list.append(data_dict)
 
