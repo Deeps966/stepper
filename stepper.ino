@@ -2,24 +2,50 @@
 #include <AccelStepper.h>
 #include <MultiStepper.h>
 
+#define STEP_PIN_M1 A0
+#define DIR_PIN_M1 A1
+#define EN_PIN_M1 38
+
+#define STEP_PIN_M2 A6
+#define DIR_PIN_M2 A7
+#define EN_PIN_M2 A2
+
+#define STEP_PIN_M3 46
+#define DIR_PIN_M3 48
+#define EN_PIN_M3 A8
+
 const int motor1StepPin = 2; // Define the step pin for motor 1
 const int motor1DirPin = 3;  // Define the direction pin for motor 1
-AccelStepper motor1(1, motor1StepPin, motor1DirPin);
+AccelStepper motor1(1, STEP_PIN_M1, DIR_PIN_M1);
 
 const int motor2StepPin = 4; // Define the step pin for motor 2
 const int motor2DirPin = 5;  // Define the direction pin for motor 2
-AccelStepper motor2(1, motor2StepPin, motor2DirPin);
+AccelStepper motor2(1, STEP_PIN_M2, DIR_PIN_M2);
 
 const int motor3StepPin = 6; // Define the step pin for motor 3
 const int motor3DirPin = 7;  // Define the direction pin for motor 3
-AccelStepper motor3(1, motor3StepPin, motor3DirPin);
+AccelStepper motor3(1, STEP_PIN_M3, DIR_PIN_M3);
 
 MultiStepper multiStepper;
+
+// 0.3mm || 3.4mm dia || 24mm length || 20.6mm distance (Using Motor Shaft)
+// 8.4mm || 28.82 || 20.42 mm distance (using 3d print box)
+
+// https://www.calculator.net/right-triangle-calculator.html?av=&alphav=15&alphaunit=d&bv=20.42&betav=&betaunit=d&cv=&hv=&areav=&perimeterv=&x=Calculate
+// angle=1, b=20.42, displacement (a) = 0.356mm
+// To move 0.35mm we need to take 116.667 steps for 1 degree angle
+// Linear travel per step (0.0254mm)
+// Total steps 590.55 for 15mm displacement
 
 void setup()
 {
   Serial.begin(115200);
-
+  pinMode(EN_PIN_M1, OUTPUT);
+  digitalWrite(EN_PIN_M1, LOW);
+  pinMode(EN_PIN_M2, OUTPUT);
+  digitalWrite(EN_PIN_M2, LOW);
+  pinMode(EN_PIN_M3, OUTPUT);
+  digitalWrite(EN_PIN_M3, LOW);
   // Set motor speed and acceleration
   motor1.setMaxSpeed(1000);
   motor1.setAcceleration(500);
